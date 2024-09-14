@@ -1,1 +1,1 @@
-//bomberman main ruby file
+#bomberman main ruby file
