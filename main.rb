@@ -66,6 +66,7 @@ x = 1
 y = 1
 angle = 2
 
+empty=Image.new(16, 16, [0, 0, 0, 0])
 block = Image.new(16, 16, [255, 255, 255, 255])
 brock = Image.new(16, 16, [255, 115, 78, 48])
 bombed=Image.new(16,16,[255,255,255,0])
@@ -74,6 +75,7 @@ jibun = [Image.new(16,16).triangle_fill(8,0,0,8,16,8,C_GREEN),
          Image.new(16,16).triangle_fill(0,8,16,8,8,16,C_GREEN),
          Image.new(16,16).triangle_fill(8,0,16,8,8,16,C_GREEN),
          Image.new(16,16).triangle_fill(8,0,0,8,8,16,C_GREEN)]
+
 
 class Bomb
     def initialize
@@ -120,7 +122,7 @@ class Bomb
     def expl
         @time+=1
         @count+=1
-        if @time>180
+        if @time>180 && @exist
             @count=0
             for i in -1..1 do
                 for j in -1..1 do
@@ -247,9 +249,10 @@ Window.loop do
   # 右のマップ
   for i in 0..15
     for j in 0..15
-      Window.draw(j * 16 + 288, i * 16, block) if $map[i][j] == 1
-      Window.draw(j * 16 + 288, i * 16, brock) if $map[i][j] == 2
-      Window.draw(j * 16 + 288, i * 16, bombed) if $map[i][j] == 4
+        Window.draw(j * 16 + 288, i * 16, empty) if $map[i][j] == 0
+        Window.draw(j * 16 + 288, i * 16, block) if $map[i][j] == 1
+        Window.draw(j * 16 + 288, i * 16, brock) if $map[i][j] == 2
+        Window.draw(j * 16 + 288, i * 16, bombed) if $map[i][j] == 4
     end
   end
 
