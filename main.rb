@@ -67,6 +67,7 @@ y = 1
 angle = 2
 
 block = Image.new(16, 16, [255, 255, 255, 255])
+brock = Image.new(16, 16, [255, 115, 78, 48])
 image = Array.new(4) {Array.new(3) {Image.new(256, 256)}}
 jibun = [Image.new(16,16).triangle_fill(8,0,0,8,16,8,C_GREEN),
          Image.new(16,16).triangle_fill(0,8,16,8,8,16,C_GREEN),
@@ -223,6 +224,7 @@ Window.loop do
   for i in 0..15
     for j in 0..15
       Window.draw(j * 16 + 288, i * 16, block) if $map[i][j] == 1
+      Window.draw(j * 16 + 288, i * 16, brock) if $map[i][j] == 2
     end
   end
 
