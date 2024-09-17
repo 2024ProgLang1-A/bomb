@@ -3,7 +3,7 @@
 # DXRuby サンプル ３Ｄ迷路
 require 'dxruby'
 
-# マップ
+#マップ
 =begin
 $map = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -172,7 +172,16 @@ class Enemy
         Image.new(16,16).triangle_fill(0,8,16,8,8,16,C_RED),
         Image.new(16,16).triangle_fill(8,0,16,8,8,16,C_RED),
         Image.new(16,16).triangle_fill(8,0,0,8,8,16,C_RED)]
+
     end
+    def getCoord_x
+        return @ex
+    end
+
+    def getCoord_y
+        return @ey
+    end
+
     def move
         @i+=1
         if @i%20==0 
@@ -226,20 +235,20 @@ Window.loop do
   end
   if Input.key_push?(K_S)
     if $map[y+1][x]==0
-    angle=1
-    y+=1
+        angle=1
+        y+=1
     end
   end
   if Input.key_push?(K_D)
     if $map[y][x+1]==0
         angle=2
-    x+=1
+        x+=1
     end
   end
   if Input.key_push?(K_A)
     if $map[y][x-1]==0
         angle=3
-    x-=1
+        x-=1
     end
   end
 
@@ -260,8 +269,16 @@ Window.loop do
 
   Window.draw(x * 16 + 288, y * 16, jibun[angle])
   bomb.expl
-  bomb.draw
+  bomb.draw 
   for num in 0..4 do
+    if enemy[num]==nil
+        next
+    end
+
+    if $map[enemy[num].getCoord_y][enemy[num].getCoord_x]==4
+        enemy[num]=nil
+        next
+    end
     enemy[num].move
     enemy[num].draw
   end
