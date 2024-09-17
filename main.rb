@@ -85,26 +85,26 @@ class Bomb
         if @exist==false 
             case angle
                 when 0 then
-                    if $map[y-1][x]==0
+                    if $map[y][x]==0
                         @bx=x
-                        @by=y-1
+                        @by=y
                         @exist=true
                     end
                 when 1 then
-                    if $map[y+1][x]==0
+                    if $map[y][x]==0
                         @bx=x
-                        @by=y+1
+                        @by=y
                         @exist=true
                     end
                 when 2 then
-                    if $map[y][x+1]==0
-                        @bx=x+1
+                    if $map[y][x]==0
+                        @bx=x
                         @by=y
                         @exist=true
                     end
                 when 3 then
-                    if $map[y][x-1]==0
-                        @bx=x-1
+                    if $map[y][x]==0
+                        @bx=x
                         @by=y
                         @exist=true
                     end
