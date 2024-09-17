@@ -220,8 +220,10 @@ end
 
 
 enemy=[]
-for num in 0..4 do
+enemyc=0
+for num in 0..1 do
     enemy[num]=Enemy.new
+    enemyc+=1
 end
 
 bomb=Bomb.new
@@ -270,17 +272,21 @@ Window.loop do
   Window.draw(x * 16 + 288, y * 16, jibun[angle])
   bomb.expl
   bomb.draw 
-  for num in 0..4 do
+  for num in 0..1 do
     if enemy[num]==nil
         next
     end
 
     if $map[enemy[num].getCoord_y][enemy[num].getCoord_x]==4
         enemy[num]=nil
+        enemyc-=1
         next
     end
     enemy[num].move
     enemy[num].draw
+  end
+  if enemyc==0
+    break
   end
   break if Input.keyPush?(K_ESCAPE)
 end
