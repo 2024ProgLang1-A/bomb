@@ -68,6 +68,7 @@ angle = 2
 
 block = Image.new(16, 16, [255, 255, 255, 255])
 brock = Image.new(16, 16, [255, 115, 78, 48])
+bombed=Image.new(16,16,[255,255,255,0])
 image = Array.new(4) {Array.new(3) {Image.new(256, 256)}}
 jibun = [Image.new(16,16).triangle_fill(8,0,0,8,16,8,C_GREEN),
          Image.new(16,16).triangle_fill(0,8,16,8,8,16,C_GREEN),
@@ -80,6 +81,9 @@ class Bomb
         @by=0
         @exist=false
         @time=0
+        @count=0
+        @bombed_x=0
+        @bombed_y=0
     end
     def put(x,y,angle)
         if @exist==false 
@@ -109,26 +113,46 @@ class Bomb
                         @exist=true
                     end
             end
-            $map[@bx][@by]=3
+            $map[@by][@bx]=3
             @time=0
         end
     end
     def expl
         @time+=1
+        @count+=1
         if @time>180
+            @count=0
             for i in -1..1 do
                 for j in -1..1 do
                     if $map[@by+i][@bx+j]!=1
-                        $map[@by+i][@bx+j]=0
-                    end
+                        $map[@by+i][@bx+j]=4
+                    end   
                 end
             end
             @exist=false
+            @bombed_x=@bx
+            @bombed_y=@by
+        end
+        if @count>=30 && @bombed_x!=0
+            for i in -1..1 do
+                for j in -1..1 do
+                    if $map[@bombed_y+i][@bombed_x+j]==4
+                        $map[@bombed_y+i][@bombed_x+j]=0
+                    end   
+                end
+            end
+            @bombed_x=0
+            @bombed_y=0
         end
     end
     def draw
         if @exist==true
-            Window.draw(@bx * 16 + 288, @by * 16, Image.new(16,16).triangle_fill(0,8,16,8,8,16,C_BLUE))
+            #Window.draw(@bx * 16 + 288, @by * 16, Image.new.circle_fill(@bx,@by,8,C_YELLOW))
+            #Image.new.circle_fill(@bx.to_f,@by.to_f,8,C_YELLOW)
+            #Image.circle_fill(@bx.to_f, @by.to_f, 8, C_YELLOW)
+            img_ball = Image.new(16, 16).circle_fill(8.0, 8.0, 8, C_YELLOW)
+            ball = Sprite.new(@bx *16+288, @by*16, img_ball)
+            ball.draw
         end
     end
 end
@@ -225,6 +249,7 @@ Window.loop do
     for j in 0..15
       Window.draw(j * 16 + 288, i * 16, block) if $map[i][j] == 1
       Window.draw(j * 16 + 288, i * 16, brock) if $map[i][j] == 2
+      Window.draw(j * 16 + 288, i * 16, bombed) if $map[i][j] == 4
     end
   end
 
