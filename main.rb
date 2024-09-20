@@ -83,7 +83,7 @@ end
 bomb=Bomb.new
 
 title_screen=TitleScreen.new
-title_font=Font.new(16,"Arial",)
+title_font=Font.new(30,"Arial",)
 titleFlag=true;
 
 Window.loop do
