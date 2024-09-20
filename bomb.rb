@@ -8,6 +8,8 @@ class Bomb
         @bombed_x=0
         @bombed_y=0
         @img_bomb = Image.load_tiles('bomb.png', 6, 10)
+        @count_bm = 0
+        @bomb_ani = 0
         #@img_bomb = Image.load('data.png')
         @bombrx=0
         @bombry=0
@@ -87,8 +89,18 @@ class Bomb
             #img_ball = Image.new(32, 32).circle_fill(16.0, 16.0, 16, C_YELLOW)
             #ball = Sprite.new(@bx *32+72, @by*32, img_ball)
             #ball.draw
+
+            @bomb_ani = [0, 0, 1, 2, 1, 2, 1, 2, 5, 11]    
+            @count_bm += 1
+            ani = @bomb_ani[@count_bm / 18 % @bomb_ani.size]
+            Window.draw(@bx * 32 + 72, @by * 32, @img_bomb[ani])    
+            if @count_bm / 18 >= @bomb_ani.size
+                @count_bm = 0
+            end
+
             
-            Window.draw(@bx * 32 + 72, @by * 32,@img_bomb[0])
+
+            #Window.draw(@bx * 32 + 72, @by * 32,@img_bomb[0])
         end
     end
 end
