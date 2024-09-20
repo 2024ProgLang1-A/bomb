@@ -9,8 +9,10 @@ class Bomb
         @bombed_y=0
         @img_bomb = Image.load_tiles('bomb.png', 6, 10)
         #@img_bomb = Image.load('data.png')
+        @bombrx=0
+        @bombry=0
     end
-    def put(x,y,angle)
+    def put(x,y,angle,bombrx,bombry)
         if @exist==false 
             case angle
                 when 0 then
@@ -40,6 +42,8 @@ class Bomb
             end
             $map[@by][@bx]=3
             @time=0
+            @bombrx=bombrx
+            @bombry=bombry
         end
     end
     def expl
@@ -47,10 +51,12 @@ class Bomb
         @count+=1
         if @time>180 && @exist
             @count=0
-            for i in -1..1 do
-                for j in -1..1 do
-                    if $map[@by+i][@bx+j]!=1
-                        $map[@by+i][@bx+j]=4
+            for i in -@bombrx..@bombrx do
+                for j in -@bombry..@bombry do
+                    if @by+j>=0 && @bx+i>=0 && @by+j<16 && @bx+i<16
+                        if $map[@by+j][@bx+i]!=1  
+                            $map[@by+j][@bx+i]=4
+                        end
                     end   
                 end
             end
@@ -59,11 +65,13 @@ class Bomb
             @bombed_y=@by
         end
         if @count>=30 && @bombed_x!=0
-            for i in -1..1 do
-                for j in -1..1 do
-                    if $map[@bombed_y+i][@bombed_x+j]==4
-                        $map[@bombed_y+i][@bombed_x+j]=0
-                    end   
+            for i in -@bombrx..@bombrx do
+                for j in -@bombry..@bombry do
+                    if @bombed_y+j>=0 && @bombed_x+i>=0 && @bombed_y+j<16 && @bombed_x+i<16
+                        if $map[@bombed_y+j][@bombed_x+i]==4 
+                            $map[@bombed_y+j][@bombed_x+i]=0
+                        end  
+                    end 
                 end
             end
             @bombed_x=0
