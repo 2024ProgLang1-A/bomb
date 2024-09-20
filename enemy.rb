@@ -8,10 +8,10 @@ class Enemy
             @ex=rand(1..14)
             @ey=rand(1..14)
         end
-        @images=[Image.new(16,16).triangle_fill(8,0,0,8,16,8,C_RED),
-        Image.new(16,16).triangle_fill(0,8,16,8,8,16,C_RED),
-        Image.new(16,16).triangle_fill(8,0,16,8,8,16,C_RED),
-        Image.new(16,16).triangle_fill(8,0,0,8,8,16,C_RED)]
+        @images=[Image.new(32,32).triangle_fill(16,0,0,16,32,16,C_RED),
+        Image.new(32,32).triangle_fill(0,16,32,16,16,32,C_RED),
+        Image.new(32,32).triangle_fill(16,0,32,16,16,32,C_RED),
+        Image.new(32,32).triangle_fill(16,0,0,16,16,32,C_RED)]
 
     end
     def getCoord_x
@@ -54,6 +54,6 @@ class Enemy
     end
 
     def draw
-        Window.draw(@ex * 16 + 288, @ey * 16, @images[@angle])
+        Window.draw(@ex * 32 + 72, @ey * 32, @images[@angle])
     end
 end 

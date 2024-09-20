@@ -48,15 +48,17 @@ x = 1
 y = 1
 angle = 2
 
-empty=Image.new(16, 16, [0, 0, 0, 0])
-block = Image.new(16, 16, [255, 255, 255, 255])
-brock = Image.new(16, 16, [255, 115, 78, 48])
-bombed=Image.new(16,16,[255,255,255,0])
+Window.height = 512  
+
+empty=Image.new(32, 32, [0, 0, 0, 0])
+block = Image.new(32, 32, [255, 255, 255, 255])
+brock = Image.new(32, 32, [255, 115, 78, 48])
+bombed=Image.new(32,32,[255,255,255,0])
 image = Array.new(4) {Array.new(3) {Image.new(256, 256)}}
-jibun = [Image.new(16,16).triangle_fill(8,0,0,8,16,8,C_GREEN),
-         Image.new(16,16).triangle_fill(0,8,16,8,8,16,C_GREEN),
-         Image.new(16,16).triangle_fill(8,0,16,8,8,16,C_GREEN),
-         Image.new(16,16).triangle_fill(8,0,0,8,8,16,C_GREEN)]
+jibun = [Image.new(32,32).triangle_fill(16,0,0,16,32,16,C_GREEN),
+         Image.new(32,32).triangle_fill(0,16,32,16,16,32,C_GREEN),
+         Image.new(32,32).triangle_fill(16,0,32,16,16,32,C_GREEN),
+         Image.new(32,32).triangle_fill(16,0,0,16,16,32,C_GREEN)]
 
 =begin
 class Bomb
@@ -131,11 +133,11 @@ class Bomb
     end
     def draw
         if @exist==true
-            #Window.draw(@bx * 16 + 288, @by * 16, Image.new.circle_fill(@bx,@by,8,C_YELLOW))
+            #Window.draw(@bx * 32 + 72, @by * 32, Image.new.circle_fill(@bx,@by,8,C_YELLOW))
             #Image.new.circle_fill(@bx.to_f,@by.to_f,8,C_YELLOW)
             #Image.circle_fill(@bx.to_f, @by.to_f, 8, C_YELLOW)
-            img_ball = Image.new(16, 16).circle_fill(8.0, 8.0, 8, C_YELLOW)
-            ball = Sprite.new(@bx *16+288, @by*16, img_ball)
+            img_ball = Image.new(32, 32).circle_fill(8.0, 8.0, 8, C_YELLOW)
+            ball = Sprite.new(@bx *32+72, @by*32, img_ball)
             ball.draw
         end
     end
@@ -152,10 +154,10 @@ class Enemy
             @ex=rand(1..14)
             @ey=rand(1..14)
         end
-        @images=[Image.new(16,16).triangle_fill(8,0,0,8,16,8,C_RED),
-        Image.new(16,16).triangle_fill(0,8,16,8,8,16,C_RED),
-        Image.new(16,16).triangle_fill(8,0,16,8,8,16,C_RED),
-        Image.new(16,16).triangle_fill(8,0,0,8,8,16,C_RED)]
+        @images=[Image.new(32,32).triangle_fill(8,0,0,8,32,8,C_RED),
+        Image.new(32,32).triangle_fill(0,8,32,8,8,32,C_RED),
+        Image.new(32,32).triangle_fill(8,0,32,8,8,32,C_RED),
+        Image.new(32,32).triangle_fill(8,0,0,8,8,32,C_RED)]
 
     end
     def getCoord_x
@@ -198,7 +200,7 @@ class Enemy
     end
 
     def draw
-        Window.draw(@ex * 16 + 288, @ey * 16, @images[@angle])
+        Window.draw(@ex * 32 + 72, @ey * 32, @images[@angle])
     end
 end 
 =end
@@ -245,16 +247,16 @@ Window.loop do
   # 右のマップ
   for i in 0..15
     for j in 0..15
-        Window.draw(j * 16 + 288, i * 16, empty) if $map[i][j] == 0
-        Window.draw(j * 16 + 288, i * 16, block) if $map[i][j] == 1
-        Window.draw(j * 16 + 288, i * 16, brock) if $map[i][j] == 2
-        Window.draw(j * 16 + 288, i * 16, bombed) if $map[i][j] == 4
+        Window.draw(j * 32 + 72, i * 32, empty) if $map[i][j] == 0
+        Window.draw(j * 32 + 72, i * 32, block) if $map[i][j] == 1
+        Window.draw(j * 32 + 72, i * 32, brock) if $map[i][j] == 2
+        Window.draw(j * 32 + 72, i * 32, bombed) if $map[i][j] == 4
     end
   end
 
   # 自分（赤の四角だけど）描画
 
-  Window.draw(x * 16 + 288, y * 16, jibun[angle])
+  Window.draw(x * 32 + 72, y * 32, jibun[angle])
   bomb.expl
   bomb.draw 
   for num in 0..1 do
