@@ -4,6 +4,8 @@ require './enemy'
 require './bomb'
 #require './asciiart'
 require './title_screen'
+require './gameover_screen'
+require './gameclear_screen'
 
 def mapInit
   $map = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -61,7 +63,7 @@ player=[playerpre[9],playerpre[0],playerpre[6],playerpre[3]]
 
 image = Array.new(4) {Array.new(3) {Image.new(256, 256)}}
 
-$enemynum=4
+$enemynum=1
 def enemyInit
   $enemy=[]
   $enemyc=0
@@ -83,10 +85,16 @@ bomb=Bomb.new
 
 title_screen=TitleScreen.new
 title_font=Font.new(30,"Arial",)
-titleFlag=true;
+gameover_screen=GameoverScreen.new
+gameover_font=title_font
+gameclear_screen=GameclearScreen.new
+gameclear_font=title_font
+titleFlag=true
+gameoverFlag=false
+gameclearFlag=false
 
 Window.loop do
-  if titleFlag
+  if (titleFlag&&!gameoverFlag&&!gameclearFlag)
 #    p "title"
 #    title_screen.puts_debug
     title_screen.print
@@ -94,6 +102,20 @@ Window.loop do
     if Input.key_push?(K_RETURN)
       titleFlag=false
       gameInit
+    end
+  elsif (!titleFlag&&gameoverFlag&&!gameclearFlag)
+    gameover_screen.print
+    Window.draw_font(32,16*(gameover_screen.getData.length+5),"Press Space Key to go Title",gameover_font,)
+    if Input.key_push?(K_SPACE)
+      titleFlag=true
+      gameoverFlag=false
+    end
+  elsif (!titleFlag&&!gameoverFlag&&gameclearFlag)
+    gameclear_screen.print
+    Window.draw_font(32,16*(gameclear_screen.getData.length+5),"Press Space Key to go Title",gameclear_font,)
+    if Input.key_push?(K_SPACE)
+      titleFlag=true
+      gameclearFlag=false
     end
   else
     if Input.key_push?(K_W)
@@ -161,8 +183,11 @@ Window.loop do
       $enemy[num].move
       $enemy[num].draw
     end
-    if $enemyc==0 || $health<=0
-      titleFlag=true
+    if $enemyc==0
+      gameclearFlag=true
+    end
+    if $health<=0
+      gameoverFlag=true
     end
     break if Input.keyPush?(K_ESCAPE)
   end
