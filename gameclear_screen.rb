@@ -1,6 +1,8 @@
 require 'dxruby'
 require './asciiart'
 
+#Ascii Art made at https://lazesoftware.com/ja/tool/hugeaagen/
+
 class GameclearScreen < AsciiArt
   def initialize
     super
