@@ -247,7 +247,7 @@ Window.loop do
   # 右のマップ
   for i in 0..15
     for j in 0..15
-        Window.draw(j * 32 + 72, i * 32, empty) if $map[i][j] == 0
+       # Window.draw(j * 32 + 72, i * 32, empty) if $map[i][j] == 0
         Window.draw(j * 32 + 72, i * 32, block) if $map[i][j] == 1
         Window.draw(j * 32 + 72, i * 32, brock) if $map[i][j] == 2
         Window.draw(j * 32 + 72, i * 32, bombed) if $map[i][j] == 4
