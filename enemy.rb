@@ -8,11 +8,8 @@ class Enemy
             @ex=rand(1..14)
             @ey=rand(1..14)
         end
-        @images=[Image.new(32,32).triangle_fill(16,0,0,16,32,16,C_RED),
-        Image.new(32,32).triangle_fill(0,16,32,16,16,32,C_RED),
-        Image.new(32,32).triangle_fill(16,0,32,16,16,32,C_RED),
-        Image.new(32,32).triangle_fill(16,0,0,16,16,32,C_RED)]
-
+        enemypre=Image.load_tiles('enemy.png',3,4)
+        @enemy=[enemypre[9],enemypre[0],enemypre[6],enemypre[3]]
     end
     def getCoord_x
         return @ex
@@ -50,10 +47,13 @@ class Enemy
                     @ex-=1
                 end
             end
+            if @ey==$y&&@ex==$x && @i%40
+                $health-=30
+            end
         end
     end
 
     def draw
-        Window.draw(@ex * 32 + 72, @ey * 32, @images[@angle])
+        Window.draw(@ex * 32 + 72, @ey * 32, @enemy[@angle])
     end
 end 
