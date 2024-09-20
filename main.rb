@@ -51,9 +51,12 @@ bombry=0
 font1=Font.new(30, "MS 明朝",weight: true)
 Window.height = 512  
 
-empty=Image.new(32, 32, [0, 0, 0, 0])
-block = Image.new(32, 32, [255, 255, 255, 255])
-brock = Image.new(32, 32, [255, 115, 78, 48])
+#ground=Image.new(32, 32, [0, 0, 0, 0])
+ground=Image.load('maptile_sogen_02.png')
+#block = Image.new(32, 32, [255, 255, 255, 255])
+block = Image.load('block_silver1.png')
+#brock = Image.new(32, 32, [255, 115, 78, 48])
+brock = Image.load('block_renga_brown.png')
 bombed=Image.new(32,32,[255,255,255,0])
 
 playerpre=Image.load_tiles('player.png',3,4)
@@ -132,7 +135,7 @@ Window.loop do
     # 右のマップ
     for i in 0..15
       for j in 0..15
-          Window.draw(j * 32 + 72, i * 32, empty) if $map[i][j] == 0
+          Window.draw(j * 32 + 72, i * 32, ground) if $map[i][j] == 0
           Window.draw(j * 32 + 72, i * 32, block) if $map[i][j] == 1
           Window.draw(j * 32 + 72, i * 32, brock) if $map[i][j] == 2
           Window.draw(j * 32 + 72, i * 32, bombed) if $map[i][j] == 4
