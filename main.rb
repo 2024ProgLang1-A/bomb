@@ -49,16 +49,18 @@ end
 bombrx=0
 bombry=0
 
+Window.height = 512  
 
-empty=Image.new(16, 16, [0, 0, 0, 0])#0
-block = Image.new(16, 16, [255, 255, 255, 255])#1
-brock = Image.new(16, 16, [255, 115, 78, 48])#2
-bombed=Image.new(16,16,[255,255,255,0])#4
+empty=Image.new(32, 32, [0, 0, 0, 0])
+block = Image.new(32, 32, [255, 255, 255, 255])
+brock = Image.new(32, 32, [255, 115, 78, 48])
+bombed=Image.new(32,32,[255,255,255,0])
+
 image = Array.new(4) {Array.new(3) {Image.new(256, 256)}}
-jibun = [Image.new(16,16).triangle_fill(8,0,0,8,16,8,C_GREEN),
-         Image.new(16,16).triangle_fill(0,8,16,8,8,16,C_GREEN),
-         Image.new(16,16).triangle_fill(8,0,16,8,8,16,C_GREEN),
-         Image.new(16,16).triangle_fill(8,0,0,8,8,16,C_GREEN)]
+jibun = [Image.new(32,32).triangle_fill(16,0,0,16,32,16,C_GREEN),
+         Image.new(32,32).triangle_fill(0,16,32,16,16,32,C_GREEN),
+         Image.new(32,32).triangle_fill(16,0,32,16,16,32,C_GREEN),
+         Image.new(32,32).triangle_fill(16,0,0,16,16,32,C_GREEN)]
 
 $enemynum=4
 def enemyInit
@@ -130,16 +132,16 @@ Window.loop do
     # 右のマップ
     for i in 0..15
       for j in 0..15
-          Window.draw(j * 16 + 288, i * 16, empty) if $map[i][j] == 0
-          Window.draw(j * 16 + 288, i * 16, block) if $map[i][j] == 1
-          Window.draw(j * 16 + 288, i * 16, brock) if $map[i][j] == 2
-          Window.draw(j * 16 + 288, i * 16, bombed) if $map[i][j] == 4
+          Window.draw(j * 32 + 72, i * 32, empty) if $map[i][j] == 0
+          Window.draw(j * 32 + 72, i * 32, block) if $map[i][j] == 1
+          Window.draw(j * 32 + 72, i * 32, brock) if $map[i][j] == 2
+          Window.draw(j * 32 + 72, i * 32, bombed) if $map[i][j] == 4
       end
     end
 
     # 自分（赤の四角だけど）描画
 
-    Window.draw($x * 16 + 288, $y * 16, jibun[$angle])
+    Window.draw($x * 32 + 72, $y * 32, jibun[$angle])
     bomb.expl
     bomb.draw 
     for num in 0..$enemynum-1 do

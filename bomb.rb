@@ -7,6 +7,8 @@ class Bomb
         @count=0
         @bombed_x=0
         @bombed_y=0
+        @img_bomb = Image.load_tiles('bomb.png', 6, 10)
+        #@img_bomb = Image.load('data.png')
         @bombrx=0
         @bombry=0
     end
@@ -78,12 +80,15 @@ class Bomb
     end
     def draw
         if @exist==true
-            #Window.draw(@bx * 16 + 288, @by * 16, Image.new.circle_fill(@bx,@by,8,C_YELLOW))
+            #Window.draw(@bx * 32 + 72, @by * 32, Image.new.circle_fill(@bx,@by,16,C_YELLOW))
             #Image.new.circle_fill(@bx.to_f,@by.to_f,8,C_YELLOW)
             #Image.circle_fill(@bx.to_f, @by.to_f, 8, C_YELLOW)
-            img_ball = Image.new(16, 16).circle_fill(8.0, 8.0, 8, C_YELLOW)
-            ball = Sprite.new(@bx *16+288, @by*16, img_ball)
-            ball.draw
+            
+            #img_ball = Image.new(32, 32).circle_fill(16.0, 16.0, 16, C_YELLOW)
+            #ball = Sprite.new(@bx *32+72, @by*32, img_ball)
+            #ball.draw
+            
+            Window.draw(@bx * 32 + 72, @by * 32,@img_bomb[0])
         end
     end
 end
