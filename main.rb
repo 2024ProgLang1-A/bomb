@@ -1,9 +1,9 @@
 #bomberman main ruby file
-#!ruby -Ks
-# DXRuby サンプル ３Ｄ迷路
 require 'dxruby'
 require './enemy'
 require './bomb'
+#require './asciiart'
+require './title_screen'
 
 $map = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -203,75 +203,87 @@ class Enemy
 end 
 =end
 
-
+enemynum=4
 enemy=[]
 enemyc=0
-for num in 0..1 do
+for num in 0..enemynum-1 do
     enemy[num]=Enemy.new
     enemyc+=1
 end
 
 bomb=Bomb.new
 
+title_screen=TitleScreen.new
+title_font=Font.new(16,"Arial",)
+titleFlag=true;
+
 Window.loop do
-  if Input.key_push?(K_W)
-    if $map[y-1][x]==0
-    angle=0
-    y-=1
+  if titleFlag
+    p "title"
+#    title_screen.puts_debug
+    title_screen.print
+    Window.draw_font(32,16*(title_screen.getData.length+5),"Press Enter Key to start",title_font,)
+    titleFlag=false if Input.key_push?(K_RETURN)
+  else
+    if Input.key_push?(K_W)
+      if $map[y-1][x]==0
+      angle=0
+      y-=1
+      end
     end
-  end
-  if Input.key_push?(K_S)
-    if $map[y+1][x]==0
-        angle=1
-        y+=1
+    if Input.key_push?(K_S)
+      if $map[y+1][x]==0
+          angle=1
+          y+=1
+      end
     end
-  end
-  if Input.key_push?(K_D)
-    if $map[y][x+1]==0
-        angle=2
-        x+=1
+    if Input.key_push?(K_D)
+      if $map[y][x+1]==0
+          angle=2
+          x+=1
+      end
     end
-  end
-  if Input.key_push?(K_A)
-    if $map[y][x-1]==0
-        angle=3
-        x-=1
-    end
-  end
-
-  if Input.key_push?(K_SPACE)
-    bomb.put(x,y,angle)
-  end
-  # 右のマップ
-  for i in 0..15
-    for j in 0..15
-        Window.draw(j * 16 + 288, i * 16, empty) if $map[i][j] == 0
-        Window.draw(j * 16 + 288, i * 16, block) if $map[i][j] == 1
-        Window.draw(j * 16 + 288, i * 16, brock) if $map[i][j] == 2
-        Window.draw(j * 16 + 288, i * 16, bombed) if $map[i][j] == 4
-    end
-  end
-
-  # 自分（赤の四角だけど）描画
-
-  Window.draw(x * 16 + 288, y * 16, jibun[angle])
-  bomb.expl
-  bomb.draw 
-  for num in 0..1 do
-    if enemy[num]==nil
-        next
+    if Input.key_push?(K_A)
+      if $map[y][x-1]==0
+          angle=3
+          x-=1
+      end
     end
 
-    if $map[enemy[num].getCoord_y][enemy[num].getCoord_x]==4
-        enemy[num]=nil
-        enemyc-=1
-        next
+    if Input.key_push?(K_SPACE)
+      bomb.put(x,y,angle)
     end
-    enemy[num].move
-    enemy[num].draw
+    # 右のマップ
+    for i in 0..15
+      for j in 0..15
+          Window.draw(j * 16 + 288, i * 16, empty) if $map[i][j] == 0
+          Window.draw(j * 16 + 288, i * 16, block) if $map[i][j] == 1
+          Window.draw(j * 16 + 288, i * 16, brock) if $map[i][j] == 2
+          Window.draw(j * 16 + 288, i * 16, bombed) if $map[i][j] == 4
+      end
+    end
+
+    # 自分（赤の四角だけど）描画
+
+    Window.draw(x * 16 + 288, y * 16, jibun[angle])
+    bomb.expl
+    bomb.draw 
+    for num in 0..enemynum-1 do
+      if enemy[num]==nil
+          next
+      end
+
+      if $map[enemy[num].getCoord_y][enemy[num].getCoord_x]==4
+          enemy[num]=nil
+          enemyc-=1
+          next
+      end
+      enemy[num].move
+      enemy[num].draw
+    end
+    if enemyc==0
+      titleFlag=true
+    end
+    break if Input.keyPush?(K_ESCAPE)
   end
-  if enemyc==0
-    break
-  end
-  break if Input.keyPush?(K_ESCAPE)
 end
