@@ -66,7 +66,7 @@ player=[playerpre[9],playerpre[0],playerpre[6],playerpre[3]]
 
 image = Array.new(4) {Array.new(3) {Image.new(256, 256)}}
 
-$enemynum=1
+$enemynum=4
 def enemyInit
   $enemy=[]
   $enemyc=0
