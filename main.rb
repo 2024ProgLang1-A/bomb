@@ -48,7 +48,7 @@ end
 
 bombrx=0
 bombry=0
-
+font1=Font.new(30, "MS 明朝",weight: true)
 Window.height = 512  
 
 empty=Image.new(32, 32, [0, 0, 0, 0])
@@ -56,11 +56,10 @@ block = Image.new(32, 32, [255, 255, 255, 255])
 brock = Image.new(32, 32, [255, 115, 78, 48])
 bombed=Image.new(32,32,[255,255,255,0])
 
+playerpre=Image.load_tiles('player.png',3,4)
+player=[playerpre[9],playerpre[0],playerpre[6],playerpre[3]]
+
 image = Array.new(4) {Array.new(3) {Image.new(256, 256)}}
-jibun = [Image.new(32,32).triangle_fill(16,0,0,16,32,16,C_GREEN),
-         Image.new(32,32).triangle_fill(0,16,32,16,16,32,C_GREEN),
-         Image.new(32,32).triangle_fill(16,0,32,16,16,32,C_GREEN),
-         Image.new(32,32).triangle_fill(16,0,0,16,16,32,C_GREEN)]
 
 $enemynum=4
 def enemyInit
@@ -142,9 +141,11 @@ Window.loop do
 
     # 自分（赤の四角だけど）描画
 
-    Window.draw($x * 32 + 72, $y * 32, jibun[$angle])
+    Window.draw($x * 32 + 72, $y * 32, player[$angle])
     bomb.expl
     bomb.draw 
+    Window.draw_font(0,0,"♡×#{$health/30}".to_s,font1,color: C_WHITE)
+
     if $map[$y][$x]==4
         $health-=1
     end
@@ -160,7 +161,7 @@ Window.loop do
       $enemy[num].move
       $enemy[num].draw
     end
-    if $enemyc==0 || $health==0
+    if $enemyc==0 || $health<=0
       titleFlag=true
     end
     break if Input.keyPush?(K_ESCAPE)
