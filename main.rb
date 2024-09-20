@@ -78,6 +78,7 @@ def gameInit
   $angle=2
   mapInit
   enemyInit
+  $health=120
 end
 bomb=Bomb.new
 
@@ -144,11 +145,13 @@ Window.loop do
     Window.draw($x * 32 + 72, $y * 32, jibun[$angle])
     bomb.expl
     bomb.draw 
+    if $map[$y][$x]==4
+        $health-=1
+    end
     for num in 0..$enemynum-1 do
       if $enemy[num]==nil
           next
       end
-
       if $map[$enemy[num].getCoord_y][$enemy[num].getCoord_x]==4
           $enemy[num]=nil
           $enemyc-=1
@@ -157,7 +160,7 @@ Window.loop do
       $enemy[num].move
       $enemy[num].draw
     end
-    if $enemyc==0
+    if $enemyc==0 || $health==0
       titleFlag=true
     end
     break if Input.keyPush?(K_ESCAPE)
