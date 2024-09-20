@@ -46,11 +46,14 @@ def mapInit
   $map[2][2] = 0
 end
 
+bombrx=0
+bombry=0
 
-empty=Image.new(16, 16, [0, 0, 0, 0])
-block = Image.new(16, 16, [255, 255, 255, 255])
-brock = Image.new(16, 16, [255, 115, 78, 48])
-bombed=Image.new(16,16,[255,255,255,0])
+
+empty=Image.new(16, 16, [0, 0, 0, 0])#0
+block = Image.new(16, 16, [255, 255, 255, 255])#1
+brock = Image.new(16, 16, [255, 115, 78, 48])#2
+bombed=Image.new(16,16,[255,255,255,0])#4
 image = Array.new(4) {Array.new(3) {Image.new(256, 256)}}
 jibun = [Image.new(16,16).triangle_fill(8,0,0,8,16,8,C_GREEN),
          Image.new(16,16).triangle_fill(0,8,16,8,8,16,C_GREEN),
@@ -74,7 +77,6 @@ def gameInit
   mapInit
   enemyInit
 end
-
 bomb=Bomb.new
 
 title_screen=TitleScreen.new
@@ -117,8 +119,13 @@ Window.loop do
       end
     end
 
+#    if Input.key_push?(K_SPACE)
+#      bomb.put($x,$y,$angle)
+#    end
     if Input.key_push?(K_SPACE)
-      bomb.put($x,$y,$angle)
+      bombrx=rand(0..3)
+      bombry=rand(0..3)
+      bomb.put($x,$y,$angle,bombrx,bombry)
     end
     # 右のマップ
     for i in 0..15
