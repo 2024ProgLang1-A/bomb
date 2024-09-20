@@ -47,162 +47,18 @@ $map[2][2] = 0
 x = 1
 y = 1
 angle = 2
+bombrx=0
+bombry=0
 
-empty=Image.new(16, 16, [0, 0, 0, 0])
-block = Image.new(16, 16, [255, 255, 255, 255])
-brock = Image.new(16, 16, [255, 115, 78, 48])
-bombed=Image.new(16,16,[255,255,255,0])
+empty=Image.new(16, 16, [0, 0, 0, 0])#0
+block = Image.new(16, 16, [255, 255, 255, 255])#1
+brock = Image.new(16, 16, [255, 115, 78, 48])#2
+bombed=Image.new(16,16,[255,255,255,0])#4
 image = Array.new(4) {Array.new(3) {Image.new(256, 256)}}
 jibun = [Image.new(16,16).triangle_fill(8,0,0,8,16,8,C_GREEN),
          Image.new(16,16).triangle_fill(0,8,16,8,8,16,C_GREEN),
          Image.new(16,16).triangle_fill(8,0,16,8,8,16,C_GREEN),
          Image.new(16,16).triangle_fill(8,0,0,8,8,16,C_GREEN)]
-
-=begin
-class Bomb
-    def initialize
-        @bx=0
-        @by=0
-        @exist=false
-        @time=0
-        @count=0
-        @bombed_x=0
-        @bombed_y=0
-    end
-    def put(x,y,angle)
-        if @exist==false 
-            case angle
-                when 0 then
-                    if $map[y][x]==0
-                        @bx=x
-                        @by=y
-                        @exist=true
-                    end
-                when 1 then
-                    if $map[y][x]==0
-                        @bx=x
-                        @by=y
-                        @exist=true
-                    end
-                when 2 then
-                    if $map[y][x]==0
-                        @bx=x
-                        @by=y
-                        @exist=true
-                    end
-                when 3 then
-                    if $map[y][x]==0
-                        @bx=x
-                        @by=y
-                        @exist=true
-                    end
-            end
-            $map[@by][@bx]=3
-            @time=0
-        end
-    end
-    def expl
-        @time+=1
-        @count+=1
-        if @time>180 && @exist
-            @count=0
-            for i in -1..1 do
-                for j in -1..1 do
-                    if $map[@by+i][@bx+j]!=1
-                        $map[@by+i][@bx+j]=4
-                    end   
-                end
-            end
-            @exist=false
-            @bombed_x=@bx
-            @bombed_y=@by
-        end
-        if @count>=30 && @bombed_x!=0
-            for i in -1..1 do
-                for j in -1..1 do
-                    if $map[@bombed_y+i][@bombed_x+j]==4
-                        $map[@bombed_y+i][@bombed_x+j]=0
-                    end   
-                end
-            end
-            @bombed_x=0
-            @bombed_y=0
-        end
-    end
-    def draw
-        if @exist==true
-            #Window.draw(@bx * 16 + 288, @by * 16, Image.new.circle_fill(@bx,@by,8,C_YELLOW))
-            #Image.new.circle_fill(@bx.to_f,@by.to_f,8,C_YELLOW)
-            #Image.circle_fill(@bx.to_f, @by.to_f, 8, C_YELLOW)
-            img_ball = Image.new(16, 16).circle_fill(8.0, 8.0, 8, C_YELLOW)
-            ball = Sprite.new(@bx *16+288, @by*16, img_ball)
-            ball.draw
-        end
-    end
-end
-=end
-=begin
-class Enemy
-    def initialize
-        @i=0
-        @angle=1
-        @ex=rand(1..14)
-        @ey=rand(1..14)
-        while $map[@ey][@ex]==1 do
-            @ex=rand(1..14)
-            @ey=rand(1..14)
-        end
-        @images=[Image.new(16,16).triangle_fill(8,0,0,8,16,8,C_RED),
-        Image.new(16,16).triangle_fill(0,8,16,8,8,16,C_RED),
-        Image.new(16,16).triangle_fill(8,0,16,8,8,16,C_RED),
-        Image.new(16,16).triangle_fill(8,0,0,8,8,16,C_RED)]
-
-    end
-    def getCoord_x
-        return @ex
-    end
-
-    def getCoord_y
-        return @ey
-    end
-
-    def move
-        @i+=1
-        if @i%20==0 
-            move=rand(0..4)
-            if move==0
-                if $map[@ey-1][@ex]==0
-                    @angle=0
-                    @ey-=1
-                end
-            end
-            if move==1
-                if $map[@ey+1][@ex]==0
-                    @angle=1
-                    @ey+=1
-                end
-            end
-            if move==2
-                if $map[@ey][@ex+1]==0
-                    @angle=2
-                    @ex+=1
-                end
-            end
-            if move==3
-                if $map[@ey][@ex-1]==0
-                    @angle=3
-                    @ex-=1
-                end
-            end
-        end
-    end
-
-    def draw
-        Window.draw(@ex * 16 + 288, @ey * 16, @images[@angle])
-    end
-end 
-=end
-
 
 enemy=[]
 enemyc=0
@@ -210,9 +66,7 @@ for num in 0..1 do
     enemy[num]=Enemy.new
     enemyc+=1
 end
-
 bomb=Bomb.new
-
 Window.loop do
   if Input.key_push?(K_W)
     if $map[y-1][x]==0
@@ -240,7 +94,9 @@ Window.loop do
   end
 
   if Input.key_push?(K_SPACE)
-    bomb.put(x,y,angle)
+    bombrx=rand(0..3)
+    bombry=rand(0..3)
+    bomb.put(x,y,angle,bombrx,bombry)
   end
   # 右のマップ
   for i in 0..15
